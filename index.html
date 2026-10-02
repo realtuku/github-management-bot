@@ -22,6 +22,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
           rel="stylesheet">
 
+    <!-- ============ REPOSITORY META ============ -->
+    <meta name="repository-url" content="https://github.com/realtuku/github-management-bot">
+
     <style>
         :root {
             --primary: #0366d6;
@@ -551,6 +554,28 @@
             line-height: 1.8;
         }
 
+        .repo-link {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .repo-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: var(--transition);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .repo-link a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
         .repo-stats {
             display: flex;
             gap: 40px;
@@ -1004,144 +1029,106 @@
         footer::before {
             content: '';
             position: absolute;
-            width: 500px;
-            height: 500px;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(3, 102, 214, 0.08), transparent 70%);
-            bottom: -250px;
-            left: -150px;
-            pointer-events: none;
+            background: radial-gradient(circle, rgba(3, 102, 214, 0.1), transparent 70%);
+            top: -100px;
+            left: 5%;
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 50px;
-            margin-bottom: 50px;
             position: relative;
             z-index: 1;
         }
 
-        .footer-section h4 {
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h4 {
             font-family: 'Poppins', sans-serif;
             font-size: 1.2rem;
             margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 15px;
         }
 
-        .footer-section h4::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        .footer-section p {
-            color: rgba(255, 255, 255, 0.75);
-            line-height: 1.8;
-            font-size: 0.95rem;
-        }
-
-        .footer-links {
+        .footer-col ul {
             list-style: none;
         }
 
-        .footer-links li {
-            margin-bottom: 12px;
+        .footer-col ul li {
+            margin-bottom: 14px;
         }
 
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.78);
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-size: 0.95rem;
-            cursor: pointer;
+            transition: var(--transition);
         }
 
-        .footer-links a i {
-            transition: transform 0.35s ease;
-            width: 18px;
-            text-align: center;
-        }
-
-        .footer-links a:hover {
+        .footer-col ul li a:hover {
             color: white;
-            transform: translateX(5px);
+            padding-left: 5px;
         }
 
-        .footer-links a:hover i {
-            transform: scale(1.2);
+        .footer-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
         }
 
         .footer-bottom {
-            text-align: center;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.88rem;
-            position: relative;
-            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .footer-bottom p {
-            margin-bottom: 8px;
+        .footer-copyright {
+            font-size: 0.95rem;
+            opacity: 0.8;
         }
 
-        .footer-bottom .heart {
-            color: #e74c3c;
-            animation: pulseDot 1.6s ease-in-out infinite;
+        .footer-socials {
+            display: flex;
+            gap: 18px;
         }
 
-        /* ================= SUB-PAGE TOGGLE ================= */
-        .subpage {
-            display: none;
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .subpage.active {
-            display: block;
-            animation: fadeInPage 0.5s ease-out;
-        }
-
-        @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .mainpage.hidden {
-            display: none;
+        .social-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-4px);
         }
 
         /* ================= RESPONSIVE ================= */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .repo-card {
-                flex-direction: column;
-                text-align: center;
-                gap: 30px;
-                padding: 40px 30px;
-            }
-
-            .repo-stats {
-                justify-content: center;
-            }
-
-            .agreement-wrapper {
-                padding: 35px 25px;
-            }
-        }
-
         @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
             .nav-links {
                 display: none;
             }
@@ -1150,830 +1137,313 @@
                 display: block;
             }
 
-            .hero {
-                padding: 150px 0 80px;
-            }
-
-            .hero h1 {
-                font-size: 2.4rem;
-            }
-
-            .hero p {
-                font-size: 1.05rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                width: 100%;
-                max-width: 320px;
-                justify-content: center;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .mobile-menu {
-                position: fixed;
-                top: 72px;
-                left: 0;
-                width: 100%;
-                background: white;
-                padding: 24px;
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-                display: none;
-                flex-direction: column;
-                gap: 20px;
-                z-index: 999;
-            }
-
-            .mobile-menu.active {
-                display: flex;
-                animation: slideDown 0.3s ease-out;
-            }
-
-            .mobile-menu a {
-                text-decoration: none;
-                color: var(--secondary);
-                font-weight: 500;
-                font-size: 1.05rem;
-                padding: 10px 0;
-                border-bottom: 1px solid #eee;
-                transition: var(--transition);
-                cursor: pointer;
-            }
-
-            .mobile-menu a:hover {
-                color: var(--primary);
-                padding-left: 8px;
-            }
-
-            .accordion-header {
-                padding: 20px 22px;
-            }
-
-            .accordion-header h4 {
-                font-size: 1.05rem;
-            }
-
-            .status-card {
-                padding: 40px 25px;
-            }
-
-            .status-card h2 {
-                font-size: 1.6rem;
-            }
-
-            .agreement-wrapper h2 {
-                font-size: 1.6rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
             .repo-card {
-                padding: 32px 22px;
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
             }
 
-            .repo-content h3 {
-                font-size: 1.6rem;
+            .footer-grid {
+                grid-template-columns: 1fr;
             }
 
-            .repo-stats {
-                gap: 24px;
-            }
-
-            .stat-number {
-                font-size: 1.6rem;
-            }
-
-            .dev-body {
-                padding: 30px 22px;
-            }
-
-            .status-actions .btn,
-            .agreement-actions .btn {
-                width: 100%;
-                max-width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.001ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.001ms !important;
+            .footer-bottom {
+                flex-direction: column-reverse;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ================= HEADER ================= -->
-    <header id="siteHeader">
-        <div class="container">
-            <nav>
-                <a href="#" class="logo" onclick="showPage('main'); return false;">
-                    <i class="fas fa-robot logo-icon"></i>
-                    GitHubBot
+<!-- ============ HEADER ============ -->
+<header>
+    <div class="container">
+        <nav>
+            <a href="#" class="logo">
+                <i class="fas fa-robot logo-icon"></i>
+                <span>GitHub Bot</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#repository">Repository</a>
+                <a href="#faq">FAQ</a>
+                <a href="#developer">Developer</a>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="live-dot"></span>
+                Open Source on GitHub
+            </div>
+            <h1>GitHub Management Bot</h1>
+            <p>A powerful Telegram bot that streamlines your GitHub workflow. Manage issues, pull requests, and notifications directly from Telegram.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/realtuku/github-management-bot" class="btn btn-primary">
+                    <i class="fas fa-code-branch"></i>
+                    View Repository
                 </a>
-
-                <div class="nav-links">
-                    <a href="#features" onclick="showMainSection('features'); return false;">Features</a>
-                    <a href="#screenshots" onclick="showMainSection('screenshots'); return false;">Screenshots</a>
-                    <a href="#repository" onclick="showMainSection('repository'); return false;">Repository</a>
-                    <a href="#developer" onclick="showMainSection('developer'); return false;">Developer</a>
-                    <a href="#rights" onclick="showMainSection('rights'); return false;">Legal</a>
-                </div>
-
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </nav>
+                <a href="#repository" class="btn btn-secondary">
+                    <i class="fas fa-arrow-down"></i>
+                    Learn More
+                </a>
+            </div>
         </div>
+    </div>
+</section>
 
-        <div class="mobile-menu" id="mobileMenu">
-            
+<!-- ============ FEATURES ============ -->
+<section class="section section-white" id="features">
+    <div class="container">
+        <div class="section-title">
+            <h2>Features</h2>
+            <p>Everything you need to manage GitHub from Telegram</p>
         </div>
-    </header>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3>Smart Notifications</h3>
+                <p>Get instant alerts for issue updates, PRs, and mentions without leaving Telegram.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Quick Commands</h3>
+                <p>Execute common GitHub operations with simple bot commands.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-sync"></i>
+                </div>
+                <h3>Real-time Sync</h3>
+                <p>Stay synchronized with your GitHub repositories in real-time.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <!-- ================= MAIN PAGE ================= -->
-    <div id="mainPage" class="mainpage">
-
-        <!-- HERO -->
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <div class="hero-badge animate__animated animate__fadeInDown">
-                        <span class="live-dot"></span>
-                        Online &amp; Monitoring 24/7
+<!-- ============ REPOSITORY ============ -->
+<section class="section section-light" id="repository">
+    <div class="container">
+        <div class="repo-card" data-aos="zoom-in">
+            <div class="repo-icon">
+                <i class="fas fa-github"></i>
+            </div>
+            <div class="repo-content">
+                <h3>GitHub Repository</h3>
+                <p>The GitHub Management Bot is open source and available on GitHub. You can view the source code, contribute, and report issues on the official repository.</p>
+                <div class="repo-link">
+                    <a href="https://github.com/realtuku/github-management-bot" target="_blank">
+                        <i class="fas fa-external-link-alt"></i>
+                        Visit Repository: https://github.com/realtuku/github-management-bot
+                    </a>
+                </div>
+                <div class="repo-stats">
+                    <div class="stat">
+                        <span class="stat-number">Open Source</span>
+                        <span class="stat-label">License</span>
                     </div>
-
-                    <h1 class="animate__animated animate__fadeInUp">GitHub Management Bot</h1>
-
-                    <p class="animate__animated animate__fadeInUp animate__delay-1s">
-                        A powerful Telegram bot that brings complete GitHub repository management
-                        to your fingertips. Manage repos, files, and collaborate seamlessly
-                        directly from Telegram.
-                    </p>
-
-                    <div class="cta-buttons animate__animated animate__fadeInUp animate__delay-2s">
-                        <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-primary">
-                            <i class="fab fa-telegram"></i>
-                            Start Using Bot
-                        </a>
-                        <a href="#features" onclick="showMainSection('features'); return false;" class="btn btn-secondary">
-                            <i class="fas fa-info-circle"></i>
-                            Learn More
-                        </a>
+                    <div class="stat">
+                        <span class="stat-number">Active</span>
+                        <span class="stat-label">Development</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
 
-        <!-- FEATURES -->
-        <section id="features" class="section section-white">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up">
-                    <h2>Powerful Features</h2>
-                    <p>Everything you need for efficient GitHub management, wrapped in an intuitive Telegram interface</p>
+<!-- ============ FAQ ============ -->
+<section class="section section-white" id="faq">
+    <div class="container">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Find answers to common questions about the GitHub Management Bot</p>
+        </div>
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h4><i class="fas fa-question-circle"></i> How do I set up the bot?</h4>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
                 </div>
-
-                <div class="features-grid">
-                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="0">
-                        <div class="feature-icon"><i class="fas fa-code-branch"></i></div>
-                        <h3>Repository Management</h3>
-                        <p>Create, list, edit, and manage all your GitHub repositories directly from Telegram. Full control at your fingertips.</p>
-                    </div>
-                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="100">
-                        <div class="feature-icon"><i class="fas fa-file-code"></i></div>
-                        <h3>File Operations</h3>
-                        <p>Browse, upload, delete, and manage files across all your repositories with simple commands.</p>
-                    </div>
-                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="200">
-                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h3>Secure Authentication</h3>
-                        <p>OAuth 2.0 authentication ensures your GitHub credentials are never exposed. Complete security.</p>
-                    </div>
-                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="300">
-                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                        <h3>Real-time Sync</h3>
-                        <p>Instant synchronization between Telegram and GitHub. Changes reflect immediately.</p>
-                    </div>
-                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="400">
-                        <div class="feature-icon"><i class="fas fa-tasks"></i></div>
-                        <h3>Complete Control</h3>
-                        <p>Edit repository details, manage settings, and control every aspect of your GitHub projects.</p>
-                    </div>
-                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="500">
-                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
-                        <h3>24/7 Availability</h3>
-                        <p>Cloud-hosted on Render for maximum uptime. Your bot assistant is always available.</p>
-                    </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Clone the repository from GitHub</li>
+                        <li>Install dependencies using npm or pip</li>
+                        <li>Configure your GitHub and Telegram tokens</li>
+                        <li>Run the bot and start managing GitHub from Telegram</li>
+                    </ul>
                 </div>
             </div>
-        </section>
-
-        <!-- SCREENSHOTS -->
-        <section id="screenshots" class="section section-light">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up">
-                    <h2>Bot Interface</h2>
-                    <p>Experience the intuitive and powerful Telegram interface</p>
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h4><i class="fas fa-lock"></i> Is my data secure?</h4>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
                 </div>
-
-                <div class="screenshot-slider" id="screenshotSlider">
-                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="0">
-                        <div class="screenshot-img"><i class="fas fa-comments"></i></div>
-                        <div class="screenshot-content">
-                            <h4>Interactive Commands</h4>
-                            <p>Clean command interface with inline buttons for easy navigation</p>
-                        </div>
-                    </div>
-                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="120">
-                        <div class="screenshot-img"><i class="fas fa-list-alt"></i></div>
-                        <div class="screenshot-content">
-                            <h4>Repository Listing</h4>
-                            <p>Beautifully formatted repository lists with detailed information</p>
-                        </div>
-                    </div>
-                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="240">
-                        <div class="screenshot-img"><i class="fas fa-cogs"></i></div>
-                        <div class="screenshot-content">
-                            <h4>Settings Panel</h4>
-                            <p>Complete control panel for managing your GitHub integration</p>
-                        </div>
-                    </div>
-                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="360">
-                        <div class="screenshot-img"><i class="fas fa-file-upload"></i></div>
-                        <div class="screenshot-content">
-                            <h4>File Management</h4>
-                            <p>Easy file operations with confirmation dialogs and progress indicators</p>
-                        </div>
-                    </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>All communications use HTTPS encryption</li>
+                        <li>Tokens are stored securely and never logged</li>
+                        <li>Open source code allows community security audits</li>
+                        <li>No personal data is shared with third parties</li>
+                    </ul>
                 </div>
             </div>
-        </section>
-
-        <!-- REPOSITORY -->
-        <section id="repository" class="section section-white">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up">
-                    <h2>Open Source Repository</h2>
-                    <p>Fully transparent and open source development</p>
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h4><i class="fas fa-cogs"></i> What commands are available?</h4>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
                 </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>/status - Check repository status</li>
+                        <li>/issues - List open issues</li>
+                        <li>/prs - View pull requests</li>
+                        <li>/notify - Configure notifications</li>
+                        <li>See the README for the complete command list</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <div class="repo-card" data-aos="fade-up">
-                    <div class="repo-icon">
+<!-- ============ DEVELOPER ============ -->
+<section class="section section-light" id="developer">
+    <div class="container">
+        <div class="section-title">
+            <h2>Developer</h2>
+            <p>Built with passion for GitHub automation</p>
+        </div>
+        <div class="dev-card" data-aos="zoom-in">
+            <div class="dev-header">
+                <div class="dev-avatar">
+                    <i class="fas fa-user-ninja"></i>
+                </div>
+                <h3 class="dev-name">realtuku</h3>
+                <p class="dev-title">Full Stack Developer</p>
+            </div>
+            <div class="dev-body">
+                <p class="dev-bio">Passionate about open source development and GitHub automation. Created this bot to streamline GitHub workflow management.</p>
+                <div class="dev-contact">
+                    <a href="https://github.com/realtuku" class="contact-item">
                         <i class="fab fa-github"></i>
-                    </div>
-                    <div class="repo-content">
-                        <h3>GitHub Management Bot</h3>
-                        <p>
-                            A comprehensive Telegram bot built with Node.js, Express, and MongoDB.
-                            Features complete GitHub API integration, secure OAuth authentication,
-                            and real-time repository management. The project follows best practices
-                            for security, scalability, and user experience.
-                        </p>
-                        <a href="https://github.com/tukuexe/github-mng-bot" target="_blank" rel="noopener" class="btn btn-primary">
-                            <i class="fab fa-github"></i>
-                            View on GitHub
-                        </a>
-                        <div class="repo-stats">
-                            <div class="stat">
-                                <span class="stat-number">100%</span>
-                                <span class="stat-label">Open Source</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-number">24/7</span>
-                                <span class="stat-label">Uptime</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-number">MIT</span>
-                                <span class="stat-label">License</span>
-                            </div>
-                        </div>
-                    </div>
+                        <span>GitHub Profile</span>
+                    </a>
                 </div>
             </div>
-        </section>
-
-        <!-- DEVELOPER -->
-        <section id="developer" class="section section-light">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up">
-                    <h2>About the Developer</h2>
-                    <p>Meet the creator behind GitHub Management Bot</p>
-                </div>
-
-                <div class="dev-card" data-aos="zoom-in-up">
-                    <div class="dev-header">
-                        <div class="dev-avatar">
-                            <img src="xmn.jpg" alt="Ximanta – Full Stack Developer"
-                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-user-tie\'></i>';">
-                        </div>
-                        <h3 class="dev-name">Ximanta</h3>
-                        <p class="dev-title">Full Stack Developer &amp; Bot Creator</p>
-                    </div>
-                    <div class="dev-body">
-                        <p class="dev-bio">
-                            Full-stack developer passionate about building fast, scalable, and intuitive
-                            web experiences. I love solving complex problems with clean architecture,
-                            modern frameworks, and efficient code. Constantly learning, constantly shipping.
-                        </p>
-                        <div class="dev-contact">
-                            <a href="mailto:xiimnta@outlook.com" class="contact-item">
-                                <i class="fas fa-envelope"></i>
-                                <span>xiimnta@outlook.com</span>
-                            </a>
-                            <a href="https://ximanta.onrender.com" target="_blank" rel="noopener" class="contact-item">
-                                <i class="fas fa-globe"></i>
-                                <span>Portfolio: ximanta.onrender.com</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- RIGHTS & LAWS -->
-        <section id="rights" class="section section-white">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up">
-                    <h2>Legal &amp; Compliance</h2>
-                    <p>Transparent policies and user rights</p>
-                </div>
-
-                <div class="accordion">
-                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="0">
-                        <div class="accordion-header">
-                            <h4><i class="fas fa-user-shield"></i> User Rights &amp; Privacy</h4>
-                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="accordion-content">
-                            <ul>
-                                <li>Complete control over your data and GitHub access</li>
-                                <li>Right to disconnect GitHub account at any time</li>
-                                <li>Transparent data usage policies</li>
-                                <li>No storage of GitHub credentials</li>
-                                <li>Automatic token invalidation upon request</li>
-                                <li>Regular security audits and updates</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
-                        <div class="accordion-header">
-                            <h4><i class="fas fa-file-contract"></i> Terms of Service</h4>
-                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="accordion-content">
-                            <ul>
-                                <li>Service provided "as-is" with best effort uptime</li>
-                                <li>Compliance with GitHub API Terms of Service</li>
-                                <li>Proper usage of GitHub API rate limits</li>
-                                <li>No abuse or automated spamming allowed</li>
-                                <li>Respect for intellectual property rights</li>
-                                <li>Compliance with all applicable laws</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
-                        <div class="accordion-header">
-                            <h4><i class="fas fa-lock"></i> Security Measures</h4>
-                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="accordion-content">
-                            <ul>
-                                <li>Encrypted OAuth token storage</li>
-                                <li>HTTPS-only communication</li>
-                                <li>Regular security updates</li>
-                                <li>Rate limiting on all endpoints</li>
-                                <li>Input validation and sanitization</li>
-                                <li>Secure MongoDB Atlas database</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="300">
-                        <div class="accordion-header">
-                            <h4><i class="fas fa-triangle-exclamation"></i> Limitations &amp; Disclaimer</h4>
-                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="accordion-content">
-                            <ul>
-                                <li>Subject to GitHub API availability</li>
-                                <li>Limited by GitHub API rate limits</li>
-                                <li>No warranty for service continuity</li>
-                                <li>Limited free tier support</li>
-                                <li>Backup recommendations provided</li>
-                                <li>User responsibility for data management</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </div><!-- /mainPage -->
-
-    <!-- ================= SUCCESS PAGE ================= -->
-    <div id="successPage" class="subpage">
-        <section class="section section-light" style="padding-top: 180px; min-height: 100vh;">
-            <div class="container">
-                <div class="status-card" data-aos="zoom-in-up">
-                    <div class="status-icon success-bg">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h2>Connection Successful!</h2>
-                    <p>Your GitHub account has been successfully connected to the Telegram bot.</p>
-                    <p>You can now manage all your repositories, files, and settings directly from Telegram.</p>
-
-                    <div class="status-message">
-                        <i class="fas fa-user-check" style="color: var(--accent); margin-right: 8px;"></i>
-                        <strong>Status:</strong> GitHub account linked successfully<br>
-                        <i class="fas fa-shield-halved" style="color: var(--accent); margin-right: 8px;"></i>
-                        <strong>Security:</strong> OAuth token stored securely<br>
-                        <i class="fas fa-clock" style="color: var(--accent); margin-right: 8px;"></i>
-                        <strong>Session:</strong> Active
-                    </div>
-
-                    <div class="status-actions">
-                        <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-primary">
-                            <i class="fab fa-telegram"></i> Return to Telegram
-                        </a>
-                        <a href="#" onclick="showPage('main'); return false;" class="btn btn-secondary">
-                            <i class="fas fa-home"></i> Back to Home
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ================= ERROR PAGE ================= -->
-    <div id="errorPage" class="subpage">
-        <section class="section section-light" style="padding-top: 180px; min-height: 100vh;">
-            <div class="container">
-                <div class="status-card" data-aos="zoom-in-up">
-                    <div class="status-icon error-bg">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <h2>Something Went Wrong</h2>
-                    <p>We encountered an error while processing your request.</p>
-                    <p>Please try again or contact support if the problem persists.</p>
-
-                    <div class="status-message error-msg">
-                        <i class="fas fa-circle-exclamation" style="margin-right: 8px;"></i>
-                        <strong>Error Code:</strong> 500 — Internal Server Error<br>
-                        <i class="fas fa-circle-info" style="margin-right: 8px;"></i>
-                        <strong>Details:</strong> The OAuth token could not be validated.<br>
-                        <i class="fas fa-lightbulb" style="margin-right: 8px;"></i>
-                        <strong>Solution:</strong> Try disconnecting and reconnecting your GitHub account.
-                    </div>
-
-                    <div class="status-actions">
-                        <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-primary">
-                            <i class="fab fa-telegram"></i> Try Again in Telegram
-                        </a>
-                        <a href="#" onclick="showPage('main'); return false;" class="btn btn-secondary">
-                            <i class="fas fa-home"></i> Back to Home
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ================= AGREEMENT PAGE ================= -->
-    <div id="agreementPage" class="subpage">
-        <section class="section section-light" style="padding-top: 180px; min-height: 100vh;">
-            <div class="container">
-                <div class="agreement-wrapper" data-aos="fade-up">
-
-                    <h2><i class="fas fa-file-contract" style="color: var(--primary); margin-right: 10px;"></i> User Agreement</h2>
-                    <p class="agreement-meta">
-                        <i class="fas fa-calendar-alt"></i> Last updated: January 2025 &nbsp;·&nbsp;
-                        <i class="fas fa-code-branch"></i> Version 1.0.0
-                    </p>
-
-                    <div class="agreement-section">
-                        <h3><i class="fas fa-handshake"></i> 1. Acceptance of Terms</h3>
-                        <p>
-                            By using GitHub Management Bot, you agree to comply with and be bound by
-                            these terms and conditions. If you do not agree with any part of these
-                            terms, please do not use the service.
-                        </p>
-                    </div>
-
-                    <div class="agreement-section">
-                        <h3><i class="fas fa-user-shield"></i> 2. Privacy &amp; Data Protection</h3>
-                        <p>We are committed to protecting your privacy. Here's how we handle your data:</p>
-                        <ul>
-                            <li>We never store your GitHub password or credentials</li>
-                            <li>OAuth tokens are encrypted and stored securely</li>
-                            <li>Your data is never shared with third parties</li>
-                            <li>You can disconnect your GitHub account at any time</li>
-                            <li>All communication is encrypted via HTTPS</li>
-                            <li>Tokens are automatically invalidated upon request</li>
-                        </ul>
-                    </div>
-
-                    <div class="agreement-section">
-                        <h3><i class="fas fa-gavel"></i> 3. Acceptable Use</h3>
-                        <p>When using this service, you agree not to:</p>
-                        <ul>
-                            <li>Use the bot for any illegal or unauthorized purpose</li>
-                            <li>Attempt to abuse, overload, or disrupt the service</li>
-                            <li>Violate GitHub's Terms of Service or API guidelines</li>
-                            <li>Use automated scripts to spam or abuse the bot</li>
-                            <li>Infringe on intellectual property rights</li>
-                            <li>Attempt to gain unauthorized access to other accounts</li>
-                        </ul>
-                    </div>
-
-                    <div class="agreement-section">
-                        <h3><i class="fas fa-shield-halved"></i> 4. Security Measures</h3>
-                        <p>We implement industry-standard security measures to protect your account:</p>
-                        <ul>
-                            <li>OAuth 2.0 authentication flow</li>
-                            <li>Encrypted token storage in MongoDB Atlas</li>
-                            <li>Rate limiting on all API endpoints</li>
-                            <li>Input validation and sanitization</li>
-                            <li>Regular security audits and updates</li>
-                            <li>HTTPS-only communication channels</li>
-                        </ul>
-                    </div>
-
-                    <div class="agreement-section">
-                        <h3><i class="fas fa-triangle-exclamation"></i> 5. Limitations &amp; Disclaimer</h3>
-                        <p>
-                            This service is provided "as-is" without any warranties. We are not
-                            responsible for any damages arising from the use of this bot. The service
-                            is subject to GitHub API availability and rate limits. Users are
-                            responsible for maintaining their own data backups.
-                        </p>
-                    </div>
-
-                    <div class="agreement-section">
-                        <h3><i class="fas fa-rotate"></i> 6. Changes to Terms</h3>
-                        <p>
-                            We reserve the right to modify these terms at any time. Continued use of
-                            the service after changes constitutes acceptance of the new terms. We will
-                            notify users of significant changes through the Telegram bot.
-                        </p>
-                    </div>
-
-                    <div class="agreement-footer">
-                        <p>
-                            <i class="fas fa-envelope" style="color: var(--primary);"></i>
-                            Questions? Contact us at
-                            <a href="mailto:xiimnta@outlook.com" style="color: var(--primary); font-weight: 600;">xiimnta@outlook.com</a>
-                        </p>
-                        <div class="agreement-actions">
-                            <a href="#" onclick="showPage('main'); return false;" class="btn btn-primary">
-                                <i class="fas fa-check"></i> I Agree — Back to Home
-                            </a>
-                            <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-secondary">
-                                <i class="fab fa-telegram"></i> Start Using Bot
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ================= FOOTER ================= -->
-    <footer>
-        <div class="container">
-
-            <div class="footer-content">
-
-                <div class="footer-section" data-aos="fade-up" data-aos-delay="0">
-                    <h4>GitHub Management Bot</h4>
-                    <p>
-                        A powerful Telegram bot for complete GitHub repository management.
-                        Secure, efficient, and always available.
-                    </p>
-                </div>
-
-                <div class="footer-section" data-aos="fade-up" data-aos-delay="100">
-                    <h4>Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener"><i class="fab fa-telegram"></i> Start Using Bot</a></li>
-                        <li><a href="https://github.com/xmn-ta/github-mng-bot" target="_blank" rel="noopener"><i class="fab fa-github"></i> Source Code</a></li>
-                        <li><a href="mailto:xiimnta@outlook.com"><i class="fas fa-envelope"></i> Contact Developer</a></li>
-                        <li><a href="https://ximanta.onrender.com" target="_blank" rel="noopener"><i class="fas fa-globe"></i> Developer Portfolio</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section" data-aos="fade-up" data-aos-delay="200">
-                    <h4>Resources</h4>
-                    <ul class="footer-links">
-                        <li><a onclick="showMainSection('features'); return false;"><i class="fas fa-star"></i> Features</a></li>
-                        <li><a onclick="showMainSection('repository'); return false;"><i class="fas fa-code"></i> Documentation</a></li>
-                        <li><a onclick="showMainSection('rights'); return false;"><i class="fas fa-balance-scale"></i> Legal</a></li>
-                        <li><a onclick="showMainSection('developer'); return false;"><i class="fas fa-user-tie"></i> About Developer</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section" data-aos="fade-up" data-aos-delay="300">
-                    <h4>Technology Stack</h4>
-                    <ul class="footer-links">
-                        <li><a><i class="fab fa-node-js"></i> Node.js Backend</a></li>
-                        <li><a><i class="fas fa-database"></i> MongoDB Database</a></li>
-                        <li><a><i class="fab fa-telegram"></i> Telegram Bot API</a></li>
-                        <li><a><i class="fab fa-github"></i> GitHub API</a></li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 GitHub Management Bot. All rights reserved. | Built with
-                    <i class="fas fa-heart heart"></i> by Ximanta
-                </p>
-                <p>This project is not affiliated with GitHub or Telegram. GitHub is a registered trademark of GitHub, Inc.</p>
-            </div>
-
         </div>
-    </footer>
+    </div>
+</section>
 
-    <!-- ============ SCROLL ANIMATION SCRIPT ============ -->
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<!-- ============ FOOTER ============ -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>GitHub Management Bot</h4>
+                    <ul>
+                        <li><a href="https://github.com/realtuku/github-management-bot">Repository</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://github.com/realtuku/github-management-bot">Source Code</a></li>
+                        <li><a href="https://github.com/realtuku/github-management-bot/issues">Report Issues</a></li>
+                        <li><a href="https://github.com/realtuku/github-management-bot/wiki">Wiki</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="#developer">Developer</a></li>
+                        <li><a href="https://github.com/realtuku">GitHub Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2024 GitHub Management Bot. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://github.com/realtuku/github-management-bot" class="social-link" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
-    <script>
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out-cubic',
-            once: true,
-            offset: 80
-        });
+<!-- ============ SCRIPTS ============ -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+    // Initialize AOS (Animate on Scroll)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 50
+    });
 
-        /* ==========================================================
-           PAGE SWITCHER — main / success / error / agreement
-           ========================================================== */
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.mainpage, .subpage').forEach(p => {
-                p.classList.add('hidden');
-                p.classList.remove('active');
-            });
+    // Accordion functionality
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const icon = this.querySelector('.accordion-icon');
 
-            // Show selected page
-            if (pageId === 'main') {
-                document.getElementById('mainPage').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                const target = document.getElementById(pageId + 'Page');
-                if (target) {
-                    target.classList.remove('hidden');
-                    target.classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Close other accordions
+            accordionHeaders.forEach(h => {
+                if (h !== this) {
+                    h.nextElementSibling.classList.remove('active');
+                    h.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
                 }
-            }
-
-            // Refresh AOS so new elements animate
-            setTimeout(() => AOS.refresh(), 100);
-
-            // Close mobile menu
-            const mobileMenu = document.getElementById('mobileMenu');
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            mobileMenu.classList.remove('active');
-            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        }
-
-        /* Show main page and scroll to a specific section */
-        function showMainSection(sectionId) {
-            document.querySelectorAll('.mainpage, .subpage').forEach(p => {
-                p.classList.add('hidden');
-                p.classList.remove('active');
             });
-            document.getElementById('mainPage').classList.remove('hidden');
 
-            const target = document.getElementById(sectionId);
+            // Toggle current accordion
+            content.classList.toggle('active');
+            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+    });
+
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = target.offsetTop - headerHeight;
-                setTimeout(() => {
-                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                }, 50);
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-
-            setTimeout(() => AOS.refresh(), 100);
-
-            const mobileMenu = document.getElementById('mobileMenu');
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            mobileMenu.classList.remove('active');
-            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        }
-
-        /* ==========================================================
-           PAGE INIT
-           ========================================================== */
-        document.addEventListener('DOMContentLoaded', function () {
-
-            /* ---------- Mobile menu ---------- */
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('active');
-                mobileMenuBtn.innerHTML = mobileMenu.classList.contains('active')
-                    ? '<i class="fas fa-times"></i>'
-                    : '<i class="fas fa-bars"></i>';
-            });
-
-            /* ---------- Accordion ---------- */
-            const accordionHeaders = document.querySelectorAll('.accordion-header');
-            accordionHeaders.forEach(header => {
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    const icon = header.querySelector('.accordion-icon i');
-
-                    content.classList.toggle('active');
-                    icon.classList.toggle('fa-chevron-down');
-                    icon.classList.toggle('fa-chevron-up');
-
-                    document.querySelectorAll('.accordion-content').forEach(other => {
-                        if (other !== content && other.classList.contains('active')) {
-                            other.classList.remove('active');
-                            const otherIcon = other.previousElementSibling.querySelector('.accordion-icon i');
-                            otherIcon.classList.remove('fa-chevron-up');
-                            otherIcon.classList.add('fa-chevron-down');
-                        }
-                    });
-                });
-            });
-
-            /* ---------- Sticky header hide / show ---------- */
-            let currentScroll = window.pageYOffset;
-            const header = document.getElementById('siteHeader');
-
-            window.addEventListener('scroll', () => {
-                const newScroll = window.pageYOffset;
-
-                if (newScroll > currentScroll && newScroll > 120) {
-                    header.style.transform = 'translateY(-100%)';
-                } else {
-                    header.style.transform = 'translateY(0)';
-                }
-                currentScroll = newScroll;
-
-                header.style.boxShadow = newScroll === 0
-                    ? '0 2px 20px rgba(0, 0, 0, 0.06)'
-                    : '0 8px 30px rgba(0, 0, 0, 0.12)';
-            });
-
-            /* ---------- Screenshot slider drag ---------- */
-            const screenshotSlider = document.querySelector('.screenshot-slider');
-            if (screenshotSlider) {
-                let isDown = false, startX, scrollLeft;
-
-                screenshotSlider.addEventListener('mousedown', e => {
-                    isDown = true;
-                    screenshotSlider.classList.add('active');
-                    startX = e.pageX - screenshotSlider.offsetLeft;
-                    scrollLeft = screenshotSlider.scrollLeft;
-                });
-
-                ['mouseleave', 'mouseup'].forEach(evt => {
-                    screenshotSlider.addEventListener(evt, () => {
-                        isDown = false;
-                        screenshotSlider.classList.remove('active');
-                    });
-                });
-
-                screenshotSlider.addEventListener('mousemove', e => {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    const x = e.pageX - screenshotSlider.offsetLeft;
-                    const walk = (x - startX) * 2;
-                    screenshotSlider.scrollLeft = scrollLeft - walk;
-                });
-            }
-
-            /* ---------- Dynamic year ---------- */
-            const yearSpan = document.querySelector('.footer-bottom p');
-            if (yearSpan) {
-                yearSpan.innerHTML = yearSpan.innerHTML.replace('2025', new Date().getFullYear());
-            }
-
         });
-    </script>
+    });
+
+    // Mobile menu button
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+
+    mobileMenuBtn.addEventListener('click', function() {
+        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Repository URL
+    const repoUrl = 'https://github.com/realtuku/github-management-bot';
+    console.log('Repository URL:', repoUrl);
+</script>
 
 </body>
 </html>
