@@ -93,13 +93,19 @@ app.get('/error', (req, res) => {
     res.sendFile(path.join(__dirname, 'error.html'));
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
+// Health check endpoint - supports GET and HEAD for UptimeRobot monitoring
+const healthCheckHandler = (req, res) => {
     res.json({ 
         status: 'ok', 
         timestamp: new Date().toISOString(),
-        service: 'GitHub Management Bot'
+        service: 'GitHub Management Bot',
+        uptime: process.uptime()
     });
+};
+
+app.get('/health', healthCheckHandler);
+app.head('/health', (req, res) => {
+    res.status(200).end();
 });
 
 // API Endpoints
@@ -171,7 +177,7 @@ app.get('/auth/github', async (req, res) => {
     });
     
     // Redirect to GitHub OAuth
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=user repo delete_repo&redirect_uri=${process.env.FRONTEND_URL}/auth/github/callback&state=${telegramId}`;
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=user repo delete_repo&redirect_uri=${process.env.FRONTEND_URL}/auth/github/callback`;
     
     res.redirect(githubAuthUrl);
 });
