@@ -3,386 +3,1971 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Management Bot</title>
+    <title>GitHub Management Bot | Telegram Bot for GitHub</title>
+
+    <!-- ============ ICON LIBRARY ============ -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+    <!-- ============ ANIMATION LIBRARY ============ -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- ============ SCROLL ANIMATION ============ -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+
+    <!-- ============ FONTS ============ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
     <style>
+        :root {
+            --primary: #0366d6;
+            --primary-dark: #024ea2;
+            --secondary: #24292e;
+            --accent: #28a745;
+            --light: #f6f8fa;
+            --dark: #1a1e22;
+            --gray: #6a737d;
+            --danger: #d73a49;
+            --warning: #f39c12;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--secondary);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 800px;
-            width: 90%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ================= HEADER ================= */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease-out;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to   { transform: translateY(0); }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            color: var(--primary);
+            font-size: 28px;
+            animation: floatY 3s ease-in-out infinite;
+        }
+
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-4px); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            padding: 5px 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--primary);
+        }
+
+        /* ================= HERO ================= */
+        .hero {
+            padding: 180px 0 110px;
+            text-align: center;
+            position: relative;
             overflow: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px 30px;
-            text-align: center;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(3, 102, 214, 0.08) 0%, transparent 65%);
+            animation: pulse 18s infinite linear;
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
+        @keyframes pulse {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.95;
-            margin-bottom: 5px;
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(40, 167, 69, 0.10), transparent 70%);
+            top: 10%;
+            right: -150px;
+            animation: floatGlow 11s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        .header small {
-            opacity: 0.8;
-            display: block;
-            font-size: 0.9em;
+        @keyframes floatGlow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50%      { transform: translate(-40px, 40px) scale(1.18); }
         }
 
-        .content {
-            padding: 50px 30px;
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            margin: 0 auto;
         }
 
-        .section {
-            margin-bottom: 40px;
-        }
-
-        .section h2 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #667eea;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-        }
-
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .nav-card {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            text-decoration: none;
-            color: #333;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .nav-card:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
-        }
-
-        .nav-card .icon {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .nav-card h3 {
-            font-size: 1.1em;
-            margin-bottom: 8px;
-            color: #667eea;
-        }
-
-        .nav-card p {
-            font-size: 0.9em;
-            color: #666;
-            line-height: 1.4;
-        }
-
-        .features {
-            background: #f8f9ff;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .features h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .features ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-        }
-
-        .features li {
-            padding: 8px 15px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            font-size: 0.95em;
-        }
-
-        .endpoints {
-            background: #fff9e6;
-            border-radius: 12px;
-            padding: 25px;
-            border: 2px solid #ffd700;
-        }
-
-        .endpoints h3 {
-            color: #f39c12;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .endpoint-item {
-            background: white;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #f39c12;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-
-        .endpoint-item strong {
-            color: #667eea;
-        }
-
-        .footer {
-            background: #f8f9ff;
-            padding: 30px;
-            text-align: center;
-            border-top: 1px solid #e0e0e0;
-            color: #666;
-        }
-
-        .footer p {
-            margin-bottom: 10px;
-            font-size: 0.95em;
-        }
-
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .footer a:hover {
-            color: #764ba2;
-        }
-
-        .social-links {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .social-links a {
+        .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 15px;
+            padding: 8px 18px;
             background: white;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .social-links a:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .content {
-                padding: 30px 20px;
-            }
-
-            .nav-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .features ul {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .badge {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
+            border-radius: 50px;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-top: 10px;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(3, 102, 214, 0.12);
+            margin-bottom: 28px;
+            border: 1px solid rgba(3, 102, 214, 0.15);
+        }
+
+        .hero-badge .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulseDot 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+            50%      { box-shadow: 0 0 0 8px rgba(40, 167, 69, 0); }
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 22px;
+            line-height: 1.15;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 42px;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn i {
+            transition: transform 0.35s ease;
+        }
+
+        .btn:hover i {
+            transform: scale(1.18);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(3, 102, 214, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(3, 102, 214, 0.45);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ================= SECTIONS ================= */
+        .section {
+            padding: 110px 0;
+        }
+
+        .section-white {
+            background: white;
+        }
+
+        .section-light {
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        /* ================= FEATURES ================= */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 36px;
+        }
+
+        .feature-card {
+            background: var(--light);
+            padding: 42px 32px;
+            border-radius: 20px;
+            text-align: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -130%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(3, 102, 214, 0.08), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 150%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 30px;
+            transition: var(--transition);
+            box-shadow: 0 8px 22px rgba(3, 102, 214, 0.28);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.12) rotate(6deg);
+            box-shadow: 0 14px 32px rgba(3, 102, 214, 0.42);
+        }
+
+        .feature-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+
+        /* ================= SCREENSHOTS ================= */
+        .screenshot-slider {
+            display: flex;
+            gap: 28px;
+            overflow-x: auto;
+            padding: 20px 0 30px;
+            scrollbar-width: none;
+            cursor: grab;
+        }
+
+        .screenshot-slider.active {
+            cursor: grabbing;
+        }
+
+        .screenshot-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .screenshot-card {
+            flex: 0 0 auto;
+            width: 300px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .screenshot-card:hover {
+            transform: scale(1.05) translateY(-6px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+        }
+
+        .screenshot-img {
+            width: 100%;
+            height: 190px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 52px;
+            transition: var(--transition);
+        }
+
+        .screenshot-card:hover .screenshot-img i {
+            transform: scale(1.15) rotate(-6deg);
+        }
+
+        .screenshot-img i {
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .screenshot-content {
+            padding: 25px;
+        }
+
+        .screenshot-content h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .screenshot-content p {
+            color: var(--gray);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        /* ================= REPOSITORY ================= */
+        .repo-card {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
+            border-radius: 24px;
+            padding: 55px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 55px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .repo-card::before {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(3, 102, 214, 0.18), transparent 70%);
+            top: -120px;
+            right: -100px;
+            animation: floatGlow 10s ease-in-out infinite;
+        }
+
+        .repo-icon {
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .repo-icon i {
+            font-size: 90px;
+            color: white;
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-12px); }
+        }
+
+        .repo-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .repo-content h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .repo-content p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .repo-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #fff, #b8d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.75;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ================= DEVELOPER ================= */
+        .dev-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+            max-width: 420px;
+            margin: 0 auto;
+            transition: var(--transition);
+        }
+
+        .dev-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.18);
+        }
+
+        .dev-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 55px 30px 35px;
+            text-align: center;
+            position: relative;
+        }
+
+        .dev-header::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+            top: -80px;
+            right: -60px;
+            animation: floatGlow 8s ease-in-out infinite;
+        }
+
+        .dev-avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin: 0 auto 22px;
+            overflow: hidden;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 52px;
+            color: var(--primary);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .dev-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .dev-card:hover .dev-avatar {
+            transform: scale(1.06) rotate(3deg);
+        }
+
+        .dev-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dev-title {
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 0.98rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dev-body {
+            padding: 40px 32px;
+        }
+
+        .dev-bio {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.02rem;
+        }
+
+        .dev-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: var(--light);
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+        }
+
+        .contact-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(10px);
+            border-color: var(--primary-dark);
+        }
+
+        .contact-item i {
+            width: 22px;
+            text-align: center;
+            font-size: 1.05rem;
+            transition: transform 0.35s ease;
+        }
+
+        .contact-item:hover i {
+            transform: scale(1.2) rotate(-6deg);
+        }
+
+        /* ================= ACCORDION ================= */
+        .accordion {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            margin-bottom: 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e1e4e8;
+            transition: var(--transition);
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.09);
+        }
+
+        .accordion-header {
+            padding: 24px 30px;
+            background: var(--light);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            background: #eef2f7;
+        }
+
+        .accordion-header h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .accordion-header h4 i {
+            color: var(--primary);
+            font-size: 1rem;
+            transition: transform 0.35s ease;
+        }
+
+        .accordion-header:hover h4 i {
+            transform: scale(1.2) rotate(-8deg);
+        }
+
+        .accordion-icon {
+            transition: var(--transition);
+            color: var(--primary);
+        }
+
+        .accordion-content {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s ease, padding 0.45s ease;
+        }
+
+        .accordion-content.active {
+            padding: 28px 30px;
+            max-height: 600px;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .accordion-content li {
+            padding: 9px 0 9px 28px;
+            color: var(--gray);
+            position: relative;
+            font-size: 0.96rem;
+            transition: var(--transition);
+        }
+
+        .accordion-content li:hover {
+            color: var(--secondary);
+            transform: translateX(4px);
+        }
+
+        .accordion-content li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        /* ================= STATUS PAGES ================= */
+        .status-card {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .status-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .status-icon {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 48px;
+            color: white;
+            position: relative;
+            z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .status-icon.success-bg {
+            background: linear-gradient(135deg, var(--accent) 0%, #1e7e34 100%);
+            box-shadow: 0 12px 35px rgba(40, 167, 69, 0.40);
+        }
+
+        .status-icon.error-bg {
+            background: linear-gradient(135deg, var(--danger) 0%, #a71d2a 100%);
+            box-shadow: 0 12px 35px rgba(215, 58, 73, 0.40);
+        }
+
+        .status-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .status-card p {
+            color: var(--gray);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .status-card .status-message {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            border-left: 4px solid var(--primary);
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .status-card .status-message.error-msg {
+            border-left-color: var(--danger);
+            background: #fff5f5;
+            color: var(--danger);
+        }
+
+        .status-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .status-actions .btn {
+            padding: 14px 28px;
+            font-size: 14px;
+        }
+
+        /* ================= AGREEMENT PAGE ================= */
+        .agreement-wrapper {
+            max-width: 820px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10);
+        }
+
+        .agreement-wrapper h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .agreement-wrapper .agreement-meta {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .agreement-section {
+            margin-bottom: 32px;
+        }
+
+        .agreement-section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .agreement-section h3 i {
+            font-size: 1rem;
+        }
+
+        .agreement-section p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 12px;
+            font-size: 0.96rem;
+        }
+
+        .agreement-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .agreement-section li {
+            padding: 8px 0 8px 28px;
+            color: var(--gray);
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .agreement-section li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        .agreement-footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e1e4e8;
+            text-align: center;
+        }
+
+        .agreement-footer p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .agreement-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 80px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(3, 102, 214, 0.08), transparent 70%);
+            bottom: -250px;
+            left: -150px;
+            pointer-events: none;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.78);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .footer-links a i {
+            transition: transform 0.35s ease;
+            width: 18px;
+            text-align: center;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-links a:hover i {
+            transform: scale(1.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.88rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            margin-bottom: 8px;
+        }
+
+        .footer-bottom .heart {
+            color: #e74c3c;
+            animation: pulseDot 1.6s ease-in-out infinite;
+        }
+
+        /* ================= SUB-PAGE TOGGLE ================= */
+        .subpage {
+            display: none;
+        }
+
+        .subpage.active {
+            display: block;
+            animation: fadeInPage 0.5s ease-out;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .mainpage.hidden {
+            display: none;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .repo-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                padding: 40px 30px;
+            }
+
+            .repo-stats {
+                justify-content: center;
+            }
+
+            .agreement-wrapper {
+                padding: 35px 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 150px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .hero p {
+                font-size: 1.05rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 320px;
+                justify-content: center;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .mobile-menu {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 24px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+                display: none;
+                flex-direction: column;
+                gap: 20px;
+                z-index: 999;
+            }
+
+            .mobile-menu.active {
+                display: flex;
+                animation: slideDown 0.3s ease-out;
+            }
+
+            .mobile-menu a {
+                text-decoration: none;
+                color: var(--secondary);
+                font-weight: 500;
+                font-size: 1.05rem;
+                padding: 10px 0;
+                border-bottom: 1px solid #eee;
+                transition: var(--transition);
+                cursor: pointer;
+            }
+
+            .mobile-menu a:hover {
+                color: var(--primary);
+                padding-left: 8px;
+            }
+
+            .accordion-header {
+                padding: 20px 22px;
+            }
+
+            .accordion-header h4 {
+                font-size: 1.05rem;
+            }
+
+            .status-card {
+                padding: 40px 25px;
+            }
+
+            .status-card h2 {
+                font-size: 1.6rem;
+            }
+
+            .agreement-wrapper h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .repo-card {
+                padding: 32px 22px;
+            }
+
+            .repo-content h3 {
+                font-size: 1.6rem;
+            }
+
+            .repo-stats {
+                gap: 24px;
+            }
+
+            .stat-number {
+                font-size: 1.6rem;
+            }
+
+            .dev-body {
+                padding: 30px 22px;
+            }
+
+            .status-actions .btn,
+            .agreement-actions .btn {
+                width: 100%;
+                max-width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🤖 GitHub Management Bot</h1>
-            <p>Complete GitHub Repository Management from Telegram</p>
-            <small>Node.js • MongoDB • Express.js • Render</small>
-        </div>
 
-        <div class="content">
-            <!-- Navigation to Pages -->
-            <div class="section">
-                <h2>📍 Pages</h2>
-                <div class="nav-grid">
-                    <a href="agreement.html" class="nav-card">
-                        <span class="icon">📜</span>
-                        <h3>Agreement</h3>
-                        <p>Terms of Service & User Agreement</p>
-                    </a>
-                    <a href="success.html" class="nav-card">
-                        <span class="icon">✅</span>
-                        <h3>Success</h3>
-                        <p>OAuth Connection Success Page</p>
-                    </a>
-                    <a href="error.html" class="nav-card">
-                        <span class="icon">❌</span>
-                        <h3>Error</h3>
-                        <p>Error Handling & Messages</p>
-                    </a>
+    <!-- ================= HEADER ================= -->
+    <header id="siteHeader">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo" onclick="showPage('main'); return false;">
+                    <i class="fas fa-robot logo-icon"></i>
+                    GitHubBot
+                </a>
+
+                <div class="nav-links">
+                    <a href="#features" onclick="showMainSection('features'); return false;">Features</a>
+                    <a href="#screenshots" onclick="showMainSection('screenshots'); return false;">Screenshots</a>
+                    <a href="#repository" onclick="showMainSection('repository'); return false;">Repository</a>
+                    <a href="#developer" onclick="showMainSection('developer'); return false;">Developer</a>
+                    <a href="#rights" onclick="showMainSection('rights'); return false;">Legal</a>
+                </div>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    <!-- ================= MAIN PAGE ================= -->
+    <div id="mainPage" class="mainpage">
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge animate__animated animate__fadeInDown">
+                        <span class="live-dot"></span>
+                        Online &amp; Monitoring 24/7
+                    </div>
+
+                    <h1 class="animate__animated animate__fadeInUp">GitHub Management Bot</h1>
+
+                    <p class="animate__animated animate__fadeInUp animate__delay-1s">
+                        A powerful Telegram bot that brings complete GitHub repository management
+                        to your fingertips. Manage repos, files, and collaborate seamlessly
+                        directly from Telegram.
+                    </p>
+
+                    <div class="cta-buttons animate__animated animate__fadeInUp animate__delay-2s">
+                        <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-primary">
+                            <i class="fab fa-telegram"></i>
+                            Start Using Bot
+                        </a>
+                        <a href="#features" onclick="showMainSection('features'); return false;" class="btn btn-secondary">
+                            <i class="fas fa-info-circle"></i>
+                            Learn More
+                        </a>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Features -->
-            <div class="section">
-                <h2>✨ Features</h2>
-                <div class="features">
-                    <h3>🎯 What You Can Do</h3>
-                    <ul>
-                        <li>📚 List repositories</li>
-                        <li>🆕 Create new repos</li>
-                        <li>📁 Manage files</li>
-                        <li>🔐 Secure OAuth</li>
-                        <li>⚡ Real-time sync</li>
-                        <li>🛡️ Rate limiting</li>
+        <!-- FEATURES -->
+        <section id="features" class="section section-white">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Powerful Features</h2>
+                    <p>Everything you need for efficient GitHub management, wrapped in an intuitive Telegram interface</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="0">
+                        <div class="feature-icon"><i class="fas fa-code-branch"></i></div>
+                        <h3>Repository Management</h3>
+                        <p>Create, list, edit, and manage all your GitHub repositories directly from Telegram. Full control at your fingertips.</p>
+                    </div>
+                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="100">
+                        <div class="feature-icon"><i class="fas fa-file-code"></i></div>
+                        <h3>File Operations</h3>
+                        <p>Browse, upload, delete, and manage files across all your repositories with simple commands.</p>
+                    </div>
+                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="200">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Secure Authentication</h3>
+                        <p>OAuth 2.0 authentication ensures your GitHub credentials are never exposed. Complete security.</p>
+                    </div>
+                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="300">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Real-time Sync</h3>
+                        <p>Instant synchronization between Telegram and GitHub. Changes reflect immediately.</p>
+                    </div>
+                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="400">
+                        <div class="feature-icon"><i class="fas fa-tasks"></i></div>
+                        <h3>Complete Control</h3>
+                        <p>Edit repository details, manage settings, and control every aspect of your GitHub projects.</p>
+                    </div>
+                    <div class="feature-card" data-aos="zoom-in-up" data-aos-delay="500">
+                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                        <h3>24/7 Availability</h3>
+                        <p>Cloud-hosted on Render for maximum uptime. Your bot assistant is always available.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREENSHOTS -->
+        <section id="screenshots" class="section section-light">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Bot Interface</h2>
+                    <p>Experience the intuitive and powerful Telegram interface</p>
+                </div>
+
+                <div class="screenshot-slider" id="screenshotSlider">
+                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="0">
+                        <div class="screenshot-img"><i class="fas fa-comments"></i></div>
+                        <div class="screenshot-content">
+                            <h4>Interactive Commands</h4>
+                            <p>Clean command interface with inline buttons for easy navigation</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="120">
+                        <div class="screenshot-img"><i class="fas fa-list-alt"></i></div>
+                        <div class="screenshot-content">
+                            <h4>Repository Listing</h4>
+                            <p>Beautifully formatted repository lists with detailed information</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="240">
+                        <div class="screenshot-img"><i class="fas fa-cogs"></i></div>
+                        <div class="screenshot-content">
+                            <h4>Settings Panel</h4>
+                            <p>Complete control panel for managing your GitHub integration</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-card" data-aos="flip-left" data-aos-delay="360">
+                        <div class="screenshot-img"><i class="fas fa-file-upload"></i></div>
+                        <div class="screenshot-content">
+                            <h4>File Management</h4>
+                            <p>Easy file operations with confirmation dialogs and progress indicators</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REPOSITORY -->
+        <section id="repository" class="section section-white">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Open Source Repository</h2>
+                    <p>Fully transparent and open source development</p>
+                </div>
+
+                <div class="repo-card" data-aos="fade-up">
+                    <div class="repo-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="repo-content">
+                        <h3>GitHub Management Bot</h3>
+                        <p>
+                            A comprehensive Telegram bot built with Node.js, Express, and MongoDB.
+                            Features complete GitHub API integration, secure OAuth authentication,
+                            and real-time repository management. The project follows best practices
+                            for security, scalability, and user experience.
+                        </p>
+                        <a href="https://github.com/tukuexe/github-mng-bot" target="_blank" rel="noopener" class="btn btn-primary">
+                            <i class="fab fa-github"></i>
+                            View on GitHub
+                        </a>
+                        <div class="repo-stats">
+                            <div class="stat">
+                                <span class="stat-number">100%</span>
+                                <span class="stat-label">Open Source</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">MIT</span>
+                                <span class="stat-label">License</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEVELOPER -->
+        <section id="developer" class="section section-light">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>About the Developer</h2>
+                    <p>Meet the creator behind GitHub Management Bot</p>
+                </div>
+
+                <div class="dev-card" data-aos="zoom-in-up">
+                    <div class="dev-header">
+                        <div class="dev-avatar">
+                            <img src="xmn.jpg" alt="Ximanta – Full Stack Developer"
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-user-tie\'></i>';">
+                        </div>
+                        <h3 class="dev-name">Ximanta</h3>
+                        <p class="dev-title">Full Stack Developer &amp; Bot Creator</p>
+                    </div>
+                    <div class="dev-body">
+                        <p class="dev-bio">
+                            Full-stack developer passionate about building fast, scalable, and intuitive
+                            web experiences. I love solving complex problems with clean architecture,
+                            modern frameworks, and efficient code. Constantly learning, constantly shipping.
+                        </p>
+                        <div class="dev-contact">
+                            <a href="mailto:xiimnta@outlook.com" class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>xiimnta@outlook.com</span>
+                            </a>
+                            <a href="https://ximanta.onrender.com" target="_blank" rel="noopener" class="contact-item">
+                                <i class="fas fa-globe"></i>
+                                <span>Portfolio: ximanta.onrender.com</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHTS & LAWS -->
+        <section id="rights" class="section section-white">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Legal &amp; Compliance</h2>
+                    <p>Transparent policies and user rights</p>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="0">
+                        <div class="accordion-header">
+                            <h4><i class="fas fa-user-shield"></i> User Rights &amp; Privacy</h4>
+                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="accordion-content">
+                            <ul>
+                                <li>Complete control over your data and GitHub access</li>
+                                <li>Right to disconnect GitHub account at any time</li>
+                                <li>Transparent data usage policies</li>
+                                <li>No storage of GitHub credentials</li>
+                                <li>Automatic token invalidation upon request</li>
+                                <li>Regular security audits and updates</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="accordion-header">
+                            <h4><i class="fas fa-file-contract"></i> Terms of Service</h4>
+                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="accordion-content">
+                            <ul>
+                                <li>Service provided "as-is" with best effort uptime</li>
+                                <li>Compliance with GitHub API Terms of Service</li>
+                                <li>Proper usage of GitHub API rate limits</li>
+                                <li>No abuse or automated spamming allowed</li>
+                                <li>Respect for intellectual property rights</li>
+                                <li>Compliance with all applicable laws</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="accordion-header">
+                            <h4><i class="fas fa-lock"></i> Security Measures</h4>
+                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="accordion-content">
+                            <ul>
+                                <li>Encrypted OAuth token storage</li>
+                                <li>HTTPS-only communication</li>
+                                <li>Regular security updates</li>
+                                <li>Rate limiting on all endpoints</li>
+                                <li>Input validation and sanitization</li>
+                                <li>Secure MongoDB Atlas database</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-aos="fade-up" data-aos-delay="300">
+                        <div class="accordion-header">
+                            <h4><i class="fas fa-triangle-exclamation"></i> Limitations &amp; Disclaimer</h4>
+                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="accordion-content">
+                            <ul>
+                                <li>Subject to GitHub API availability</li>
+                                <li>Limited by GitHub API rate limits</li>
+                                <li>No warranty for service continuity</li>
+                                <li>Limited free tier support</li>
+                                <li>Backup recommendations provided</li>
+                                <li>User responsibility for data management</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /mainPage -->
+
+    <!-- ================= SUCCESS PAGE ================= -->
+    <div id="successPage" class="subpage">
+        <section class="section section-light" style="padding-top: 180px; min-height: 100vh;">
+            <div class="container">
+                <div class="status-card" data-aos="zoom-in-up">
+                    <div class="status-icon success-bg">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Connection Successful!</h2>
+                    <p>Your GitHub account has been successfully connected to the Telegram bot.</p>
+                    <p>You can now manage all your repositories, files, and settings directly from Telegram.</p>
+
+                    <div class="status-message">
+                        <i class="fas fa-user-check" style="color: var(--accent); margin-right: 8px;"></i>
+                        <strong>Status:</strong> GitHub account linked successfully<br>
+                        <i class="fas fa-shield-halved" style="color: var(--accent); margin-right: 8px;"></i>
+                        <strong>Security:</strong> OAuth token stored securely<br>
+                        <i class="fas fa-clock" style="color: var(--accent); margin-right: 8px;"></i>
+                        <strong>Session:</strong> Active
+                    </div>
+
+                    <div class="status-actions">
+                        <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-primary">
+                            <i class="fab fa-telegram"></i> Return to Telegram
+                        </a>
+                        <a href="#" onclick="showPage('main'); return false;" class="btn btn-secondary">
+                            <i class="fas fa-home"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= ERROR PAGE ================= -->
+    <div id="errorPage" class="subpage">
+        <section class="section section-light" style="padding-top: 180px; min-height: 100vh;">
+            <div class="container">
+                <div class="status-card" data-aos="zoom-in-up">
+                    <div class="status-icon error-bg">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2>Something Went Wrong</h2>
+                    <p>We encountered an error while processing your request.</p>
+                    <p>Please try again or contact support if the problem persists.</p>
+
+                    <div class="status-message error-msg">
+                        <i class="fas fa-circle-exclamation" style="margin-right: 8px;"></i>
+                        <strong>Error Code:</strong> 500 — Internal Server Error<br>
+                        <i class="fas fa-circle-info" style="margin-right: 8px;"></i>
+                        <strong>Details:</strong> The OAuth token could not be validated.<br>
+                        <i class="fas fa-lightbulb" style="margin-right: 8px;"></i>
+                        <strong>Solution:</strong> Try disconnecting and reconnecting your GitHub account.
+                    </div>
+
+                    <div class="status-actions">
+                        <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-primary">
+                            <i class="fab fa-telegram"></i> Try Again in Telegram
+                        </a>
+                        <a href="#" onclick="showPage('main'); return false;" class="btn btn-secondary">
+                            <i class="fas fa-home"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= AGREEMENT PAGE ================= -->
+    <div id="agreementPage" class="subpage">
+        <section class="section section-light" style="padding-top: 180px; min-height: 100vh;">
+            <div class="container">
+                <div class="agreement-wrapper" data-aos="fade-up">
+
+                    <h2><i class="fas fa-file-contract" style="color: var(--primary); margin-right: 10px;"></i> User Agreement</h2>
+                    <p class="agreement-meta">
+                        <i class="fas fa-calendar-alt"></i> Last updated: January 2025 &nbsp;·&nbsp;
+                        <i class="fas fa-code-branch"></i> Version 1.0.0
+                    </p>
+
+                    <div class="agreement-section">
+                        <h3><i class="fas fa-handshake"></i> 1. Acceptance of Terms</h3>
+                        <p>
+                            By using GitHub Management Bot, you agree to comply with and be bound by
+                            these terms and conditions. If you do not agree with any part of these
+                            terms, please do not use the service.
+                        </p>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h3><i class="fas fa-user-shield"></i> 2. Privacy &amp; Data Protection</h3>
+                        <p>We are committed to protecting your privacy. Here's how we handle your data:</p>
+                        <ul>
+                            <li>We never store your GitHub password or credentials</li>
+                            <li>OAuth tokens are encrypted and stored securely</li>
+                            <li>Your data is never shared with third parties</li>
+                            <li>You can disconnect your GitHub account at any time</li>
+                            <li>All communication is encrypted via HTTPS</li>
+                            <li>Tokens are automatically invalidated upon request</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h3><i class="fas fa-gavel"></i> 3. Acceptable Use</h3>
+                        <p>When using this service, you agree not to:</p>
+                        <ul>
+                            <li>Use the bot for any illegal or unauthorized purpose</li>
+                            <li>Attempt to abuse, overload, or disrupt the service</li>
+                            <li>Violate GitHub's Terms of Service or API guidelines</li>
+                            <li>Use automated scripts to spam or abuse the bot</li>
+                            <li>Infringe on intellectual property rights</li>
+                            <li>Attempt to gain unauthorized access to other accounts</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h3><i class="fas fa-shield-halved"></i> 4. Security Measures</h3>
+                        <p>We implement industry-standard security measures to protect your account:</p>
+                        <ul>
+                            <li>OAuth 2.0 authentication flow</li>
+                            <li>Encrypted token storage in MongoDB Atlas</li>
+                            <li>Rate limiting on all API endpoints</li>
+                            <li>Input validation and sanitization</li>
+                            <li>Regular security audits and updates</li>
+                            <li>HTTPS-only communication channels</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h3><i class="fas fa-triangle-exclamation"></i> 5. Limitations &amp; Disclaimer</h3>
+                        <p>
+                            This service is provided "as-is" without any warranties. We are not
+                            responsible for any damages arising from the use of this bot. The service
+                            is subject to GitHub API availability and rate limits. Users are
+                            responsible for maintaining their own data backups.
+                        </p>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h3><i class="fas fa-rotate"></i> 6. Changes to Terms</h3>
+                        <p>
+                            We reserve the right to modify these terms at any time. Continued use of
+                            the service after changes constitutes acceptance of the new terms. We will
+                            notify users of significant changes through the Telegram bot.
+                        </p>
+                    </div>
+
+                    <div class="agreement-footer">
+                        <p>
+                            <i class="fas fa-envelope" style="color: var(--primary);"></i>
+                            Questions? Contact us at
+                            <a href="mailto:xiimnta@outlook.com" style="color: var(--primary); font-weight: 600;">xiimnta@outlook.com</a>
+                        </p>
+                        <div class="agreement-actions">
+                            <a href="#" onclick="showPage('main'); return false;" class="btn btn-primary">
+                                <i class="fas fa-check"></i> I Agree — Back to Home
+                            </a>
+                            <a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener" class="btn btn-secondary">
+                                <i class="fab fa-telegram"></i> Start Using Bot
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="0">
+                    <h4>GitHub Management Bot</h4>
+                    <p>
+                        A powerful Telegram bot for complete GitHub repository management.
+                        Secure, efficient, and always available.
+                    </p>
+                </div>
+
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="100">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://t.me/GitHubmngbot" target="_blank" rel="noopener"><i class="fab fa-telegram"></i> Start Using Bot</a></li>
+                        <li><a href="https://github.com/xmn-ta/github-mng-bot" target="_blank" rel="noopener"><i class="fab fa-github"></i> Source Code</a></li>
+                        <li><a href="mailto:xiimnta@outlook.com"><i class="fas fa-envelope"></i> Contact Developer</a></li>
+                        <li><a href="https://ximanta.onrender.com" target="_blank" rel="noopener"><i class="fas fa-globe"></i> Developer Portfolio</a></li>
                     </ul>
                 </div>
+
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="200">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a onclick="showMainSection('features'); return false;"><i class="fas fa-star"></i> Features</a></li>
+                        <li><a onclick="showMainSection('repository'); return false;"><i class="fas fa-code"></i> Documentation</a></li>
+                        <li><a onclick="showMainSection('rights'); return false;"><i class="fas fa-balance-scale"></i> Legal</a></li>
+                        <li><a onclick="showMainSection('developer'); return false;"><i class="fas fa-user-tie"></i> About Developer</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="300">
+                    <h4>Technology Stack</h4>
+                    <ul class="footer-links">
+                        <li><a><i class="fab fa-node-js"></i> Node.js Backend</a></li>
+                        <li><a><i class="fas fa-database"></i> MongoDB Database</a></li>
+                        <li><a><i class="fab fa-telegram"></i> Telegram Bot API</a></li>
+                        <li><a><i class="fab fa-github"></i> GitHub API</a></li>
+                    </ul>
+                </div>
+
             </div>
 
-            <!-- API Endpoints -->
-            <div class="section">
-                <h2>🔧 API Endpoints</h2>
-                <div class="endpoints">
-                    <h3>Available Routes</h3>
-                    <div class="endpoint-item">
-                        <strong>GET/HEAD</strong> /health → Service health check
-                    </div>
-                    <div class="endpoint-item">
-                        <strong>POST</strong> /api/user/agree → Accept terms
-                    </div>
-                    <div class="endpoint-item">
-                        <strong>GET</strong> /api/user/:telegramId → User info
-                    </div>
-                    <div class="endpoint-item">
-                        <strong>GET</strong> /auth/github → OAuth flow
-                    </div>
-                    <div class="endpoint-item">
-                        <strong>POST</strong> /api/github/repos → Fetch repos
-                    </div>
-                </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 GitHub Management Bot. All rights reserved. | Built with
+                    <i class="fas fa-heart heart"></i> by Ximanta
+                </p>
+                <p>This project is not affiliated with GitHub or Telegram. GitHub is a registered trademark of GitHub, Inc.</p>
             </div>
 
-            <!-- Quick Links -->
-            <div class="section">
-                <h2>🔗 Quick Links</h2>
-                <div class="nav-grid">
-                    <a href="https://github.com/realtuku/github-mng-bot" class="nav-card" target="_blank">
-                        <span class="icon">🐙</span>
-                        <h3>GitHub Repo</h3>
-                        <p>View source code</p>
-                    </a>
-                    <a href="https://t.me/GitHubmngbot" class="nav-card" target="_blank">
-                        <span class="icon">💬</span>
-                        <h3>Telegram Bot</h3>
-                        <p>Start using the bot</p>
-                    </a>
-                    <a href="https://t.me/tukuexe" class="nav-card" target="_blank">
-                        <span class="icon">👨‍💻</span>
-                        <h3>Developer</h3>
-                        <p>Contact support</p>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Health & Monitoring -->
-            <div class="section">
-                <h2>🩺 Monitoring</h2>
-                <div class="features" style="background: #e8f5e9;">
-                    <h3 style="color: #4caf50;">24/7 Uptime Monitoring</h3>
-                    <p style="margin-bottom: 15px; color: #333;">
-                        This service includes health check endpoints monitored by <strong>UptimeRobot</strong> and <strong>Render</strong> to ensure 24/7 availability on the free tier.
-                    </p>
-                    <div class="endpoint-item" style="border-left-color: #4caf50; background: white;">
-                        <strong>GET/HEAD</strong> /health → Returns JSON with service status & uptime
-                    </div>
-                    <p style="margin-top: 15px; font-size: 0.9em; color: #555;">
-                        ✓ Supports both GET and HEAD requests<br>
-                        ✓ Returns uptime counter<br>
-                        ✓ Monitored every 5 minutes
-                    </p>
-                </div>
-            </div>
         </div>
+    </footer>
 
-        <div class="footer">
-            <p><strong>GitHub Management Bot</strong> v1.0.0</p>
-            <p>Manage your GitHub repositories directly from Telegram</p>
-            
-            <div class="social-links">
-                <a href="https://github.com/realtuku/github-mng-bot" target="_blank">
-                    🐙 GitHub
-                </a>
-                <a href="https://t.me/GitHubmngbot" target="_blank">
-                    💬 Telegram
-                </a>
-                <a href="https://t.me/tukuexe" target="_blank">
-                    👨‍💻 Support
-                </a>
-                <a href="https://ximanta.onrender.com" target="_blank">
-                    🌐 Portfolio
-                </a>
-            </div>
+    <!-- ============ SCROLL ANIMATION SCRIPT ============ -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
-            <p style="margin-top: 20px; font-size: 0.85em; color: #999;">
-                Made with ❤️ by <a href="https://github.com/realtuku">Ximanta</a>
-            </p>
-        </div>
-    </div>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 80
+        });
+
+        /* ==========================================================
+           PAGE SWITCHER — main / success / error / agreement
+           ========================================================== */
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.mainpage, .subpage').forEach(p => {
+                p.classList.add('hidden');
+                p.classList.remove('active');
+            });
+
+            // Show selected page
+            if (pageId === 'main') {
+                document.getElementById('mainPage').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const target = document.getElementById(pageId + 'Page');
+                if (target) {
+                    target.classList.remove('hidden');
+                    target.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            // Refresh AOS so new elements animate
+            setTimeout(() => AOS.refresh(), 100);
+
+            // Close mobile menu
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            mobileMenu.classList.remove('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+
+        /* Show main page and scroll to a specific section */
+        function showMainSection(sectionId) {
+            document.querySelectorAll('.mainpage, .subpage').forEach(p => {
+                p.classList.add('hidden');
+                p.classList.remove('active');
+            });
+            document.getElementById('mainPage').classList.remove('hidden');
+
+            const target = document.getElementById(sectionId);
+            if (target) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = target.offsetTop - headerHeight;
+                setTimeout(() => {
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }, 50);
+            }
+
+            setTimeout(() => AOS.refresh(), 100);
+
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            mobileMenu.classList.remove('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+
+        /* ==========================================================
+           PAGE INIT
+           ========================================================== */
+        document.addEventListener('DOMContentLoaded', function () {
+
+            /* ---------- Mobile menu ---------- */
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                mobileMenuBtn.innerHTML = mobileMenu.classList.contains('active')
+                    ? '<i class="fas fa-times"></i>'
+                    : '<i class="fas fa-bars"></i>';
+            });
+
+            /* ---------- Accordion ---------- */
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.accordion-icon i');
+
+                    content.classList.toggle('active');
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+
+                    document.querySelectorAll('.accordion-content').forEach(other => {
+                        if (other !== content && other.classList.contains('active')) {
+                            other.classList.remove('active');
+                            const otherIcon = other.previousElementSibling.querySelector('.accordion-icon i');
+                            otherIcon.classList.remove('fa-chevron-up');
+                            otherIcon.classList.add('fa-chevron-down');
+                        }
+                    });
+                });
+            });
+
+            /* ---------- Sticky header hide / show ---------- */
+            let currentScroll = window.pageYOffset;
+            const header = document.getElementById('siteHeader');
+
+            window.addEventListener('scroll', () => {
+                const newScroll = window.pageYOffset;
+
+                if (newScroll > currentScroll && newScroll > 120) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                currentScroll = newScroll;
+
+                header.style.boxShadow = newScroll === 0
+                    ? '0 2px 20px rgba(0, 0, 0, 0.06)'
+                    : '0 8px 30px rgba(0, 0, 0, 0.12)';
+            });
+
+            /* ---------- Screenshot slider drag ---------- */
+            const screenshotSlider = document.querySelector('.screenshot-slider');
+            if (screenshotSlider) {
+                let isDown = false, startX, scrollLeft;
+
+                screenshotSlider.addEventListener('mousedown', e => {
+                    isDown = true;
+                    screenshotSlider.classList.add('active');
+                    startX = e.pageX - screenshotSlider.offsetLeft;
+                    scrollLeft = screenshotSlider.scrollLeft;
+                });
+
+                ['mouseleave', 'mouseup'].forEach(evt => {
+                    screenshotSlider.addEventListener(evt, () => {
+                        isDown = false;
+                        screenshotSlider.classList.remove('active');
+                    });
+                });
+
+                screenshotSlider.addEventListener('mousemove', e => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - screenshotSlider.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    screenshotSlider.scrollLeft = scrollLeft - walk;
+                });
+            }
+
+            /* ---------- Dynamic year ---------- */
+            const yearSpan = document.querySelector('.footer-bottom p');
+            if (yearSpan) {
+                yearSpan.innerHTML = yearSpan.innerHTML.replace('2025', new Date().getFullYear());
+            }
+
+        });
+    </script>
+
 </body>
 </html>
